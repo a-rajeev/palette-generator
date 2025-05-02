@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palette Extractor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="main">
+    <h1 id="title">Palette Extractor</h1>
+    
+    <div id="palette-info">
+      <p>Upload an image to generate a beautiful color palette.</p>
+    </div>
+
+    <input type="file" id="imageUploader" accept="image/*" />
+    <img id="uploadedImage" src="" alt="Uploaded Image" crossorigin="anonymous" style="display: none;"/>
+    
+    <div id="palette"></div>
+
+    <button id="exportBtn" style="display: none;">Export Palette</button>
+
+    <div id="color-info">
+      <p>Hover over a color to see its name and code!</p>
+    </div>
+  </main>
+    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
