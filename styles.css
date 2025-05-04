@@ -7,7 +7,6 @@
   body {
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    text-align: center;
     margin: 64px;
   }
   
@@ -20,11 +19,30 @@
     font-size: 6em;
     font-weight: 400;
     margin-bottom: 24px;
-    color: #fff;
+    color: #000;
   }
   
   #imageUploader {
     margin-top: 24px;
+    display: none;
+  }
+
+  .upload-btn {
+    margin-top: 24px;
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #6f6ac2;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(111, 106, 194, 0.3);
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .upload-btn:hover {
+    background-color: #443d8f;
+    box-shadow: none;
   }
 
   #uploadedImage {
@@ -43,7 +61,6 @@
   }
 
   #palette-info {
-    margin-top: 16px;
     font-size: 1.4em;
     color: #000;
   }
@@ -60,22 +77,17 @@
     transform: scale(1.1);
   }
 
-  #color-info {
-    margin-top: 16px;
-    font-size: 1em;
-    color: #666;
-  }
-
   button {
     margin-top: 24px;
-    padding: 8px 24px;
-    background-color: #4caf50;
+    padding: 12px 24px;
+    background-color: #6f6ac2;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
   }
 
   button:hover {
-    background-color: #45a049;
+    background-color: #443d8f;
   }
