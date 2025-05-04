@@ -16,15 +16,13 @@
     </div>
 
     <input type="file" id="imageUploader" accept="image/*" />
-    <img id="uploadedImage" src="" alt="Uploaded Image" crossorigin="anonymous" style="display: none;"/>
+    <label for="imageUploader" class="upload-btn">Upload an image</label>
+    <img id="uploadedImage" src="https://picsum.photos/640/427?random=1" alt="Placeholder Image" crossorigin="anonymous" class="image-preview"/>
     
     <div id="palette"></div>
 
-    <button id="exportBtn" style="display: none;">Export Palette</button>
+    <button id="exportBtn" style="display: none;">Get color palette</button>
 
-    <div id="color-info">
-      <p>Hover over a color to see its name and code!</p>
-    </div>
   </main>
     
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
