@@ -31,9 +31,9 @@
     margin-top: 24px;
     display: inline-block;
     padding: 12px 24px;
-    background-color: #6f6ac2;
+    background-color: #000;
     color: #fff;
-    box-shadow: 0 2px 4px rgba(111, 106, 194, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     font-weight: 500;
     border-radius: 8px;
     cursor: pointer;
@@ -41,8 +41,17 @@
   }
 
   .upload-btn:hover {
-    background-color: #443d8f;
+    background-color: #585858;
     box-shadow: none;
+  }
+
+  #placeholderImage {
+    margin-top: 24px;
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    border-radius: 16px;
+    object-fit: cover;
   }
 
   #uploadedImage {
@@ -80,7 +89,8 @@
   button {
     margin-top: 24px;
     padding: 12px 24px;
-    background-color: #6f6ac2;
+    background-color: #000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     color: white;
     border: none;
     border-radius: 8px;
@@ -89,5 +99,5 @@
   }
 
   button:hover {
-    background-color: #443d8f;
+    background-color: #585858;
   }
