@@ -1,26 +1,9 @@
 const imageUploader = document.getElementById("imageUploader");
+const placeholderImage = document.getElementById("placeholderImage");
 const paletteDiv = document.getElementById("palette");
 const exportBtn = document.getElementById("exportBtn");
 
 const colorThief = new ColorThief();
-
-function generatePalette(image) {
-  const palette = colorThief.getPalette(image, 5);
-
-  paletteDiv.innerHTML = "";
-
-  palette.forEach((color) => {
-    const colorDiv = document.createElement("div");
-    colorDiv.classList.add("color");
-    colorDiv.style.backgroundColor = `rgb(${color.join(",")})`;
-    colorDiv.dataset.hex = rgbToHex(color);
-
-    colorDiv.title = colorDiv.dataset.hex;
-    paletteDiv.appendChild(colorDiv);
-  });
-
-  exportBtn.style.display = "inline-block";
-}
 
 function rgbToHex(rgb) {
   return "#" + rgb.map(val => {
@@ -29,49 +12,124 @@ function rgbToHex(rgb) {
   }).join("");
 }
 
-imageUploader.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
+function generatePalette(image) {
+  if (!image.complete) return;
 
-    reader.onload = function(event) {
-      const placeholderImage = document.getElementById("placeholderImage");
-      placeholderImage.src = event.target.result;
-      placeholderImage.style.display = "block";
+  try {
+    const palette = colorThief.getPalette(image, 5);
+    if (!palette || palette.length === 0) {
+      console.warn("No palette extracted.");
+      return;
+    }
 
-      placeholderImage.onload = function() {
-        generatePalette(placeholderImage);
-      };
-    };
-    reader.readAsDataURL(file);
+    paletteDiv.innerHTML = "";
+
+    palette.forEach((color) => {
+      const colorWrapper = document.createElement("div");
+      colorWrapper.classList.add("color-wrapper");
+
+      const colorDiv = document.createElement("div");
+      colorDiv.classList.add("color");
+      const hexColor = rgbToHex(color); 
+      colorDiv.style.backgroundColor = `rgb(${color.join(",")})`;
+      colorDiv.dataset.hex = hexColor;
+
+      const copyText = document.createElement("div");
+      copyText.classList.add("copy-text");
+      copyText.textContent = "Copy";
+
+      const hexCode = document.createElement("div");
+      hexCode.classList.add("hex-code");
+      hexCode.textContent = hexColor;
+
+      colorWrapper.appendChild(colorDiv);
+      colorDiv.appendChild(copyText); 
+      colorWrapper.appendChild(hexCode);
+      paletteDiv.appendChild(colorWrapper);
+
+      colorDiv.addEventListener("click", function() {
+        const hexValue = this.dataset.hex;
+        console.log("Hex to copy: ", hexValue);
+        
+        const textarea = document.createElement("textarea");
+        textarea.value = hexValue;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        
+        try {
+          const successful = document.execCommand("copy");
+          if (successful) {
+            copyText.textContent = "Copied 😊";
+            setTimeout(() => {
+              copyText.textContent = "Copy";
+            }, 1000);
+          } else {
+            console.error("Copy command was unsuccessful");
+          }
+        } catch (err) {
+          console.error("Failed to copy: ", err);
+        }
+        
+        document.body.removeChild(textarea);
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(hexValue)
+            .catch(err => console.error("Clipboard API failed: ", err));
+        }
+      });
+    });
+
+  } catch (e) {
+    console.error("Error generating palette:", e);
   }
-});
+}
 
 const customImages = [
-  "https://github.com/a-rajeev/palette-generator/blob/update_style/assets/images/Img%20(1).jpg?raw=true",
-  "https://github.com/a-rajeev/palette-generator/blob/update_style/assets/images/Img%20(11).jpeg?raw=true",
-  "https://github.com/a-rajeev/palette-generator/blob/update_style/assets/images/Img%20(14).jpeg?raw=true",
-  "https://github.com/a-rajeev/palette-generator/blob/update_style/assets/images/Img%20(2).jpg?raw=true",
-  "https://github.com/a-rajeev/palette-generator/blob/update_style/assets/images/Img%20(3).jpg?raw=true",
-  "https://github.com/a-rajeev/palette-generator/blob/update_style/assets/images/Img%20(8).jpeg?raw=true"
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_8_maggno.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362378/Img_12_kmtfyp.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_2_sva2cf.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_14_iztn1c.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_3_xezvcv.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_1_auzpgs.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_2_r8nark.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362377/Img_11_lobpjz.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362271/cld-sample-2.jpg",
+  "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362270/samples/coffee.jpg"
 ];
 
-const randomImage = customImages[Math.floor(Math.random() * customImages.length)];
+document.addEventListener("DOMContentLoaded", () => {
+  const randomImage = customImages[Math.floor(Math.random() * customImages.length)];
+  placeholderImage.crossOrigin = "anonymous";
+  placeholderImage.src = randomImage;
 
-document.getElementById("placeholderImage").src = randomImage;
+  placeholderImage.onload = () => {
+    setTimeout(() => generatePalette(placeholderImage), 100);
+  };
+
+  imageUploader.addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      placeholderImage.src = imageUrl;
+      placeholderImage.onload = () => {
+        generatePalette(placeholderImage);
+      };
+      customImages.push(imageUrl);
+    }
+  });
+});
 
 exportBtn.addEventListener("click", () => {
-  const colors = [];
-  const colorDivs = document.querySelectorAll(".color");
-  colorDivs.forEach((colorDiv) => {
-    colors.push(colorDiv.dataset.hex);
-  });
-
-  const palette = JSON.stringify(colors, null, 2);
-  const blob = new Blob([palette], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "palette.json";
-  link.click();
+  const colors = Array.from(paletteDiv.querySelectorAll('.color'))
+                      .map(colorDiv => colorDiv.dataset.hex);
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colors));
+  const downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href",     dataStr);
+  downloadAnchorNode.setAttribute("download", "palette.json");
+  document.body.appendChild(downloadAnchorNode);
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
 });
