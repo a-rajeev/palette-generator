@@ -36,7 +36,12 @@ function generatePalette(image) {
 
       const copyText = document.createElement("div");
       copyText.classList.add("copy-text");
-      copyText.textContent = "Copy";
+      copyText.innerHTML = `
+        <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">
+          content_copy
+        </span>
+        Copy
+`       ;
 
       const hexCode = document.createElement("div");
       hexCode.classList.add("hex-code");
@@ -62,9 +67,22 @@ function generatePalette(image) {
         try {
           const successful = document.execCommand("copy");
           if (successful) {
-            copyText.textContent = "Copied 😊";
+            copyText.innerHTML = `
+              <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">
+                check
+              </span>
+              Copied!
+            `;
+            copyText.classList.add("copy-bounce");
+
             setTimeout(() => {
-              copyText.textContent = "Copy";
+              copyText.classList.remove("copy-bounce");
+              copyText.innerHTML = `
+                <span class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">
+                  content_copy
+                </span>
+                Copy
+              `;
             }, 1000);
           } else {
             console.error("Copy command was unsuccessful");

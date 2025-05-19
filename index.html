@@ -6,6 +6,7 @@
   <title>Palette Extractor</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400&family=Inter+Tight:wght@500&family=Inter+Tight:wght@600&family=Inter:wght@400;500;600&family=Inter+Tight+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,17 +18,27 @@
     </div>
 
     <div id="canvas">
-      <input type="file" id="imageUploader" accept="image/*" />
-      <label for="imageUploader" class="upload-btn">Upload an image</label>
+      <div id="toolbar">
+        <input type="file" id="imageUploader" accept="image/*" />
+        <label for="imageUploader" class="upload-btn">
+          <span class="material-symbols-outlined">
+            upload
+          </span>
+          Upload an image
+        </label>
 
+        <button id="exportBtn">
+          <span class="material-symbols-outlined">
+            download
+            </span>
+            Export color palette
+          </button>
+      </div>
+      
       <div id="palette-container">
         <img id="placeholderImage" src="" alt="Random Placeholder Image" crossorigin="anonymous" style="width: 100%; height: 427px;" />
         <div id="palette"></div>
-      </div>
-
-      <div class="divider"></div>
-
-      <button id="exportBtn">Export color palette</button>
+      </div>    
 
     </div>
 
