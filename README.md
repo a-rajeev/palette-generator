@@ -1,5 +1,7 @@
 # Palette Generator
 
+🚀 Live Preview - https://a-rajeev.github.io/palette-generator/
+
 A simple web app that allows users to upload an image and generate a color palette from the image. The generated palette is displayed with the corresponding HEX color codes.
 
 ## Features
