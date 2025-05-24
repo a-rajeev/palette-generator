@@ -56,10 +56,9 @@
     display: inline-block;
     padding: 12px 16px;
     padding-left: 12px;
-    background-color: #FDFCFB;
+    background-color: #F8F4F2;
     color: #000;
-    border: 1.5px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border: 1.5px solid #F8F4F2;
     font-size: 16px;
     letter-spacing: 0;
     border-radius: 16px;
@@ -70,16 +69,33 @@
 
   .upload-btn:hover {
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  #tryDemoImageBtn {
+    display: inline-block;
+    padding: 12px 24px;
+    padding-left: 12px;
+    background-color: #F8F4F2;
+    color: #000;
+    border: 1.5px solid #F8F4F2;
+    font-size: 16px;
+    letter-spacing: 0;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 8px;
+  }
+
+  #tryDemoImageBtn:hover {
+    background-color: #fff;
   }
 
   #exportBtn {
     display: inline-block;
     padding: 12px 24px;
-    background-color: #282523;
-    color: #FDFBFB;
-    border: 1.5px solid #282523;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    background-color: #F8F4F2;
+    color: #000;
+    border: 1.5px solid #F8F4F2;
     font-size: 16px;
     letter-spacing: 0;
     border-radius: 16px;
@@ -88,9 +104,7 @@
   }
 
   #exportBtn:hover {
-    background-color: #000;
-    border: 1.5px solid #000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    background-color: #fff;
   }
 
   .upload-btn, #exportBtn {
