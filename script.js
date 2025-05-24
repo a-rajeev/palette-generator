@@ -2,6 +2,7 @@ const imageUploader = document.getElementById("imageUploader");
 const placeholderImage = document.getElementById("placeholderImage");
 const paletteDiv = document.getElementById("palette");
 const exportBtn = document.getElementById("exportBtn");
+const tryDemoImageBtn = document.getElementById("tryDemoImageBtn");
 
 const colorThief = new ColorThief();
 
@@ -30,7 +31,7 @@ function generatePalette(image) {
 
       const colorDiv = document.createElement("div");
       colorDiv.classList.add("color");
-      const hexColor = rgbToHex(color); 
+      const hexColor = rgbToHex(color);
       colorDiv.style.backgroundColor = `rgb(${color.join(",")})`;
       colorDiv.dataset.hex = hexColor;
 
@@ -41,21 +42,20 @@ function generatePalette(image) {
           content_copy
         </span>
         Copy
-`       ;
+      `;
 
       const hexCode = document.createElement("div");
       hexCode.classList.add("hex-code");
       hexCode.textContent = hexColor;
 
       colorWrapper.appendChild(colorDiv);
-      colorDiv.appendChild(copyText); 
+      colorDiv.appendChild(copyText);
       colorWrapper.appendChild(hexCode);
       paletteDiv.appendChild(colorWrapper);
 
-      colorDiv.addEventListener("click", function() {
+      colorDiv.addEventListener("click", function () {
         const hexValue = this.dataset.hex;
-        console.log("Hex to copy: ", hexValue);
-        
+
         const textarea = document.createElement("textarea");
         textarea.value = hexValue;
         textarea.setAttribute("readonly", "");
@@ -63,7 +63,7 @@ function generatePalette(image) {
         textarea.style.left = "-9999px";
         document.body.appendChild(textarea);
         textarea.select();
-        
+
         try {
           const successful = document.execCommand("copy");
           if (successful) {
@@ -90,9 +90,9 @@ function generatePalette(image) {
         } catch (err) {
           console.error("Failed to copy: ", err);
         }
-        
+
         document.body.removeChild(textarea);
-        
+
         if (navigator.clipboard) {
           navigator.clipboard.writeText(hexValue)
             .catch(err => console.error("Clipboard API failed: ", err));
@@ -118,7 +118,7 @@ const customImages = [
   "https://res.cloudinary.com/dmtvv9nti/image/upload/v1746362270/samples/coffee.jpg"
 ];
 
-document.addEventListener("DOMContentLoaded", () => {
+function showRandomDemoImage() {
   const randomImage = customImages[Math.floor(Math.random() * customImages.length)];
   placeholderImage.crossOrigin = "anonymous";
   placeholderImage.src = randomImage;
@@ -126,8 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
   placeholderImage.onload = () => {
     setTimeout(() => generatePalette(placeholderImage), 100);
   };
+}
 
-  imageUploader.addEventListener("change", function(e) {
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize with a random demo image
+  showRandomDemoImage();
+
+  imageUploader.addEventListener("change", function (e) {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -138,16 +143,18 @@ document.addEventListener("DOMContentLoaded", () => {
       customImages.push(imageUrl);
     }
   });
-});
 
-exportBtn.addEventListener("click", () => {
-  const colors = Array.from(paletteDiv.querySelectorAll('.color'))
-                      .map(colorDiv => colorDiv.dataset.hex);
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colors));
-  const downloadAnchorNode = document.createElement('a');
-  downloadAnchorNode.setAttribute("href",     dataStr);
-  downloadAnchorNode.setAttribute("download", "palette.json");
-  document.body.appendChild(downloadAnchorNode);
-  downloadAnchorNode.click();
-  downloadAnchorNode.remove();
+  tryDemoImageBtn.addEventListener("click", showRandomDemoImage);
+
+  exportBtn.addEventListener("click", () => {
+    const colors = Array.from(paletteDiv.querySelectorAll('.color'))
+      .map(colorDiv => colorDiv.dataset.hex);
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(colors));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "palette.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  });
 });
